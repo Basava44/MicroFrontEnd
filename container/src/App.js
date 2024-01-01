@@ -1,12 +1,16 @@
-import React from "react";
-import { BrowserRouter } from "react-router-dom";
+import React, { Suspense, lazy } from "react";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import {
   StylesProvider,
   createGenerateClassName,
 } from "@material-ui/core/styles";
 
-import MarketingApp from "../components/MarketingApp";
 import Header from "../components/Header";
+import Progress from "../components/Progress";
+
+const MarketingLazy = lazy(() => import("../components/MarketingApp"));
+const AuthLazy = lazy(() => import("../components/AuthApp"));
+
 const generateClassName = createGenerateClassName({
   disableGlobal: true,
   seed: "mui-jss",
@@ -18,7 +22,12 @@ export default () => {
       <BrowserRouter>
         <div>
           <Header />
-          <MarketingApp />
+          <Suspense fallback={<Progress />}>
+            <Switch>
+              <Route path="/auth" component={AuthLazy} />
+              <Route path="/" component={MarketingLazy} />
+            </Switch>
+          </Suspense>
         </div>
       </BrowserRouter>
     </StylesProvider>

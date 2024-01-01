@@ -10,6 +10,7 @@ const mount = (el, { onNavigate, defaultHistory, initialPath }) => {
     createMemoryHistory({
       initialEntries: [initialPath],
     });
+
   if (onNavigate) {
     history.listen(onNavigate);
   }
@@ -19,6 +20,7 @@ const mount = (el, { onNavigate, defaultHistory, initialPath }) => {
   return {
     onParentNavigate({ pathname: nextPathname }) {
       const { pathname } = history.location;
+
       if (nextPathname !== pathname) {
         history.push(nextPathname);
       }
@@ -27,7 +29,7 @@ const mount = (el, { onNavigate, defaultHistory, initialPath }) => {
 };
 
 if (process.env.NODE_ENV === "development") {
-  const el = document.querySelector("#_marketing-dev-root");
+  const el = document.querySelector("#_auth-dev-root");
 
   if (el) {
     mount(el, { defaultHistory: createBrowserHistory() });
